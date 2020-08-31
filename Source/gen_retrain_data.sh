@@ -9,6 +9,6 @@ dataset=UCSDped2
 
 modeldir=hvad-32-16-8-release
 
-python3 gen_test.py $dataset 0-3 $modeldir test 1 0
-python3 gen_normalTest.py $dataset 0-3 $modeldir test 1 0
-python3 gen_testmask.py
+python3 gen_test.py $dataset 0-3 $modeldir test
+python3 gen_normalTest.py $dataset 0-3 $modeldir test
+python3 gen_testmask.py $dataset 0-3 $modeldir test

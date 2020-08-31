@@ -66,7 +66,7 @@ def test_hvad(params):
     thresh = 0.80
     score_thresh = 0.85
     minframeNum = 10
-    a = 3.5
+    a = 2
     #tpr_thresh = 0.49
     total_tpr=[]
     total_frame = 0
@@ -174,7 +174,7 @@ def test_hvad(params):
             new_thresh = normal_score1.mean()
             normal_score1 = normal_score1/normal_score1.max()
             score_thresh1 = normal_score1.mean()
-            score_thresh1 = a*score_thresh1*(1-score_thresh1)#ped1 2.5  ped2 5.5
+            score_thresh1 = a*score_thresh1*(1-score_thresh1)
         else:
             new_thresh = 0
             score_thresh1 = 0
@@ -246,27 +246,15 @@ def test_hvad(params):
                 frm_files = glob.glob(frm_folder + '/*' + frm_ext)
                 frm_files.sort()
                 target_frmfolder = '%s/newdata/%s' % (data_folder, s)
-                #target_gtfolder = '%s/newdata/%s_gt' % (data_folder, s)
                 if not os.path.exists(target_frmfolder):
                     os.makedirs(target_frmfolder)
-                #if not os.path.exists(target_gtfolder):
-                #    os.makedirs(target_gtfolder)
+                
                 for i in range(len(normal_start)):
                     for j in range(normal_start[i], normal_end[i]+1):
                         target_frmfile = '%s/%03d%s' % (target_frmfolder, j, frm_ext)
                         copyfile(frm_files[j], target_frmfile)
-                        #target_gtfile = '%s/%03d.%s' % (target_gtfolder, j, gt_ext)
-                        #copyfile(gt_files[j], target_gtfile)
+                        
 
-        #video_vis_folder = '%s/%s' % (vis_folder, s)
-        #if os.path.isdir(video_vis_folder) == False:
-        #    os.mkdir(video_vis_folder)
-        #fig_file = '%s/anomalyOutput.jpg' % (video_vis_folder)
-        #fig_file = '%s/graph/%s.jpg' %(vis_folder, s)
-        #plt.savefig(fig_file)
-        #plt.show()
-        #plt.pause(3)
-        #plt.close()
     total_tpr_array = np.array(total_tpr)
     resfile.write('tpr_mean：'+str(float('%.2f' %total_tpr_array.mean())))
     resfile.write('\n')
@@ -298,13 +286,6 @@ if __name__ == "__main__":
 
         # a file contains a list of testing videos
         test_str = sys.argv[4]
-
-        # show the results every 5 frames on figures
-        bshow = int(sys.argv[5])
-        # save the results to a folder
-        bsave = bshow
-        # evaluate the detection results using the frame/pixel/dual-pixel levels
-        use_gt = int(sys.argv[6])
     else:
         raise ValueError("Please provide the arguments")
 
@@ -314,7 +295,6 @@ if __name__ == "__main__":
     print('layer_ids=',layer_ids)
     print('cae_folder_name = %s' % cae_folder_name)
     print('test_str = %s' % test_str)
-    print('use_gt = %d' % use_gt)
     print('gan_layer0_folder_name = %s' % gan_layer0_folder_name)
     params = ParamManager()
 
@@ -348,9 +328,6 @@ if __name__ == "__main__":
     params.add('gan_layer0_folder_name', gan_layer0_folder_name, 'hvad')
     params.add('data_str', data_str, 'hvad')
     params.add('test_str', test_str, 'hvad')
-    params.add('bshow', bshow, 'hvad')
-    params.add('bsave', bsave, 'hvad')
-    params.add('use_gt', use_gt, 'hvad')
     params.add('bh5py', bh5py, 'hvad')
     params.add('frame_step', frame_step, 'hvad')
     params.add('min_size', min_size, 'hvad')

@@ -873,9 +873,11 @@ def test_hvad(params):
 
 
     vis_folder = '%s/%s' % (res_folder, folder_name)
-
+    res_test_folder = '%s/Test' % (vis_folder)
     if os.path.isdir(vis_folder) == False:
         os.mkdir(vis_folder)
+    if os.path.isdir(res_test_folder) == False:
+        os.mkdir(res_test_folder)
     flog = open('%s/test_hvad_v5_brox_hier_2thresh_release_v4_log.txt' % (vis_folder), 'wt')
     cae_folder = '%s/%s' % (model_folder, cae_folder_name)
     gan_layer0_folder = '%s/%s' % (model_folder, gan_layer0_folder_name)

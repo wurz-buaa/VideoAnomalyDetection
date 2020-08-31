@@ -26,7 +26,6 @@ def test_hvad(params):
 
     data_str = params.get_value('data_str')
     test_str = params.get_value('test_str')
-    use_gt = params.get_value('use_gt')
 
     resz = params.get_value('resz')
     thresh = params.get_value('thresh')
@@ -119,37 +118,15 @@ def test_hvad(params):
         flag = 0
         pxlTPR = 0
         for i in range(GT.shape[0]):
-            if use_gt == 1:
-                if I_frame[i] == 0:
-                    pxlTPR = 0
+            if E_map_score[i] >= score_thresh and flag == 0:
+                anomaly_start.append(i)
+                flag = 1
+            if E_map_score[i] < score_thresh and flag == 1:
+                if i - anomaly_start[-1] < minframeNum:
+                    del anomaly_start[-1]
                 else:
-                    pxlTPR = I_frame[i] * 1.0 / mask_frame[i]
-                if pxlTPR > tpr_thresh:
-                    if E_map_score[i] >= score_thresh and flag == 0:
-                        anomaly_start.append(i)
-                        flag = 1
-                    if E_map_score[i] < score_thresh and flag == 1:
-                        if i - anomaly_start[-1] < minframeNum:
-                            del anomaly_start[-1]
-                        else:
-                            anomaly_end.append(i-1)
-                        flag = 0
-                elif flag == 1:
-                    if i - anomaly_start[-1] < minframeNum:
-                        del anomaly_start[-1]
-                    else:
-                        anomaly_end.append(i-1)
-                    flag = 0
-            else:
-                if E_map_score[i] >= score_thresh and flag == 0:
-                    anomaly_start.append(i)
-                    flag = 1
-                if E_map_score[i] < score_thresh and flag == 1:
-                    if i - anomaly_start[-1] < minframeNum:
-                        del anomaly_start[-1]
-                    else:
-                        anomaly_end.append(i-1)
-                    flag = 0
+                    anomaly_end.append(i-1)
+                flag = 0
 
         if flag == 1:
             if i - anomaly_start[-1] < minframeNum:
@@ -223,13 +200,6 @@ if __name__ == "__main__":
 
         # a file contains a list of testing videos
         test_str = sys.argv[4]
-
-        # show the results every 5 frames on figures
-        bshow = int(sys.argv[5])
-        # save the results to a folder
-        bsave = bshow
-        # evaluate the detection results using the frame/pixel/dual-pixel levels
-        use_gt = int(sys.argv[6])
     else:
         raise ValueError("Please provide the arguments")
 
@@ -273,9 +243,6 @@ if __name__ == "__main__":
     params.add('gan_layer0_folder_name', gan_layer0_folder_name, 'hvad')
     params.add('data_str', data_str, 'hvad')
     params.add('test_str', test_str, 'hvad')
-    params.add('bshow', bshow, 'hvad')
-    params.add('bsave', bsave, 'hvad')
-    params.add('use_gt', use_gt, 'hvad')
     params.add('bh5py', bh5py, 'hvad')
     params.add('frame_step', frame_step, 'hvad')
     params.add('min_size', min_size, 'hvad')

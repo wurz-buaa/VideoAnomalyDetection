@@ -118,6 +118,9 @@ def feat_extract(data_str, resz, mode):
         video_list = read_list_from_file('%s/all.lst' % data_folder)
     elif mode == 1:
         video_list = read_list_from_file('%s/test1.lst' % data_folder)
+        test1_folder = '%s/Test1' % (feat_folder)
+        if not os.path.exists(test1_folder):
+            os.mkdir(test1_folder)
 
     for s in video_list:
         frm_folder = "%s/%s" % (data_folder, s)

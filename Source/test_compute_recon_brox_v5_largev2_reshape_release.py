@@ -205,9 +205,11 @@ def test_compute_recon(params):
             vis_folder = '%s/%s/recon' % (model_folder, gan0_folder_name)
         else:
             vis_folder = '%s/recon' % (cae_folder)
-
+        recon_Test_folder = '%s/Test' % (vis_folder)
         if os.path.isdir(vis_folder) == False:
             os.makedirs(vis_folder)
+        if os.path.isdir(recon_Test_folder) == False:
+            os.makedirs(recon_Test_folder)
         flog = open('%s/test_compute_recon_log_mode%d_largev2_reshape.txt' % (vis_folder, mode), 'wt')
         dualprint('mode = %d' % mode, flog)
 
